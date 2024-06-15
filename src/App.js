@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
   const [device, setDevice] = useState(false);
   const [ledGreenStatus, setLedGreenStatus] = useState(false);
   const [ledRedStatus, setLedRedStatus] = useState(false);
   const [potValue, setPotValue] = useState(0);
-  const ESP32_IP = 'http://192.168.1.38';
+  const [servoAngle, setServoAngle] = useState(94);
+  const ESP32_IP = 'http://192.168.85.196';
 
   const handleRoot = () => {
     axios.get(`${ESP32_IP}/`)
@@ -14,6 +16,7 @@ function App() {
         setLedGreenStatus(false);
         setLedRedStatus(false);
         setDevice(true);
+        setServoAngle(94)
       })
       .catch(error => {
         setDevice(false);
@@ -61,9 +64,20 @@ function App() {
     const interval = setInterval(readSensor, 500);
     return () => clearInterval(interval);
   }, []);
+  
+  const writeServo = (angle) => {
+    axios.get(`${ESP32_IP}/SERVO?angle=${angle}`)
+      .then(() => {
+        setDevice(true);
+      })
+      .catch(error => {
+        setDevice(false);
+        console.error('Error:', error);
+      });
+  };
 
   return (
-    <div className="App">
+    <div className='App'>
       <header>
         <div>
           <b>Device</b>
@@ -78,21 +92,28 @@ function App() {
       <main>
         <div className='widget'>
           <p>El LED VERDE está: {ledGreenStatus}</p>
-          <div class="toggle">
-            <input type="checkbox" id="green" onClick={(e) => handleLed('GREEN', e)} checked={ledGreenStatus}/>
-            <label for="green"></label>
+          <div className='toggle'>
+            <input type='checkbox' id='green' onClick={(e) => handleLed('GREEN', e)} checked={ledGreenStatus}/>
+            <label for='green'></label>
           </div>
         </div>
         <div className='widget'>
           <p>El LED ROJO está: {ledRedStatus}</p>
-          <div class="toggle">
-            <input type="checkbox" id="red" onClick={(e) => handleLed('RED', e)} checked={ledRedStatus}/>
-            <label for="red"></label>
+          <div className='toggle'>
+            <input type='checkbox' id='red' onClick={(e) => handleLed('RED', e)} checked={ledRedStatus}/>
+            <label for='red'></label>
           </div>
         </div>
         <div className='widget'>
           <p>Valor del Potenciómetro:</p>
           <h1>{potValue}</h1>
+        </div>
+        <div className='widget'>
+          <p>Servomotor se mueve a:</p>
+          <div className='row'>
+            <input type='number' value={servoAngle} onChange={(e) => setServoAngle(e.target.value)} min='0' max='180'/>
+            <button onClick={() => writeServo(servoAngle)}>Move</button>
+          </div>
         </div>
       </main>
     </div>

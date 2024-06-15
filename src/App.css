@@ -2,17 +2,22 @@
   text-align: center;
   font-family:'Courier New', Courier, monospace;
   background-color: #eee;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .App > header{
   display: flex;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
   justify-content:space-around;
   align-items: center;
   height: 70px;
   background-color: #fff;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.208);
   gap: 20%;
+  z-index: 2;
 }
 
 .App > header > div{
@@ -67,16 +72,18 @@
 }
 
 .App > main{
-  margin: 50px 20px;
+  margin: 100px auto 30px auto;
+  width: 90%;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .App > main > .widget{
   height: 200px;
   width: 250px;
   padding: 20px;
+  margin: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,7 +93,7 @@
 }
 
 .App > main > div > .toggle {
-  background: #ddd;
+  background-color: #ddd;
   width: 90px;
   height: 40px;
   padding: 5px;
@@ -96,13 +103,16 @@
 .App > main > div > .toggle > label {
   width: 40px;
   height: 40px;
-  background: #aaa;
+  background-color: #aaa;
   display: flex;
   cursor: pointer;
   border-radius: 50px;
   position: relative;
   transition: all 350ms ease;
   z-index: 1;
+}
+.App > main > div > .toggle > label:hover {
+  background-color: #888;
 }
 
 .App > main > div > .toggle > input {
@@ -111,7 +121,7 @@
 
 .App > main > div > .toggle > input:checked + label {
   margin-left: 50px;
-  background: teal;
+  background-color: teal;
 }
 
 .App > main > div > .toggle:before, .App > main > div > .toggle:after {
@@ -132,7 +142,7 @@
   content: "OFF";
   margin-top: -40px;
   margin-left: 5px;
-  color: #666;
+  color: #888;
 }
 
 .App > main > .widget > h1{
@@ -141,20 +151,55 @@
   font-weight: 600;
 }
 
+.App > main > .widget > .row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.App > main > .widget > .row > input{
+  border: none;
+  font-size: 24px;
+  font-weight: 600;
+  width: 100px;
+  height: 50px;
+  padding: 0 0 0 20px;
+  border-radius: 50px 0 0 50px;
+  font-family:'Courier New', Courier, monospace;
+  background-color: #ddd;
+  transition: all 350ms ease;
+  color: #aaa;
+  outline: none;
+}
+.App > main > .widget > .row > input:hover{
+  color: #888;
+}
+.App > main > .widget > .row > input:focus{
+  color: #888;
+}
+.App > main > .widget > .row > input::-webkit-outer-spin-button,
+.App > main > .widget > .row > input::-webkit-inner-spin-button {
+  height: 50px;
+}
+
+.App > main > .widget > .row > button{
+  height: 50px;
+  width: 50px;
+  border: none;
+  border-radius: 0 50px 50px 0;
+  font-family:'Courier New', Courier, monospace;
+  cursor: pointer;
+  color: #888;
+  transition: all 350ms ease;
+}
+.App > main > .widget > .row > button:hover{
+  background-color: teal;
+  color: #fff;
+}
+
 @media only screen and (max-width: 960px){
   .App > header{
     gap: 10%;
-  }
-
-  .App > main{
-    margin: 0;
-    flex-direction: column;
-    height: 85vh;
-  }
-
-  .App > main > .widget{
-    height: 20%;
-    width: 70%;
   }
 
   .App > main > .widget > h1{
